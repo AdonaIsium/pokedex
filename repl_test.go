@@ -15,11 +15,11 @@ func TestCleanInput(t *testing.T) {
 		},
 		{
 			input: "       Hello,      this is    a   test. You're    funny!",
-			expected: []string{"Hello,", "this", "is", "a", "test.", "You're", "funny!"},
+			expected: []string{"hello,", "this", "is", "a", "test.", "you're", "funny!"},
 		},
 		{
-			input: "  I     am  a     big     fan     of Jx!",
-			expected: []string{"I", "am", "a", "big", "fan", "of", "Jax!"},
+			input: "  I     am  a     big     fan     of Jax!",
+			expected: []string{"i", "am", "a", "big", "fan", "of", "jax!"},
 		},
 	}
 
