@@ -1,14 +1,17 @@
 package main
 
+import "github.com/AdonaIsium/pokedex/internal/pokeapi"
+
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(c *Config) error
+	callback    func(c *config) error
 }
 
-type Config struct {
-	Next     string
-	Previous string
+type config struct {
+	pokeapiClient    pokeapi.Client
+	nextLocationsURL *string
+	prevLocationsURL *string
 }
 
 func getCommands() map[string]cliCommand {
@@ -26,7 +29,7 @@ func getCommands() map[string]cliCommand {
 	mapCommand := cliCommand{
 		name:        "map",
 		description: "Get information about a location",
-		callback:    commandMap,
+		callback:    commandMapForward,
 	}
 	mapBackCommand := cliCommand{
 		name:        "mapb",

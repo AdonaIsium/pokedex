@@ -7,12 +7,11 @@ import (
 	"strings"
 )
 
-func startRepl() {
+func startRepl(c *config) {
 	userInput := os.Stdin
 	pokeScanner := bufio.NewScanner(userInput)
 	supportedCommands := getCommands()
 	fmt.Println("Welcome to the Pokedex!")
-	config := Config{Next: "", Previous: ""}
 	for {
 
 		fmt.Printf("Pokedex > ")
@@ -23,7 +22,7 @@ func startRepl() {
 		if command, exists := supportedCommands[splitText[0]]; !exists {
 			fmt.Println("Unknown command")
 		} else {
-			err := command.callback(&config)
+			err := command.callback(c)
 			if err != nil {
 				fmt.Println(err)
 			}
