@@ -13,7 +13,7 @@ func commandCatch(c *config, args ...string) error {
 		return err
 	}
 
-	fmt.Printf("Throwing a Pokeball at %s...", pokemonName)
+	fmt.Printf("Throwing a Pokeball at %s...\n", pokemonName)
 	caught := attemptCatch(pokemonResp.BaseExperience)
 	if caught {
 		fmt.Printf("Caught a wild %s\n", pokemonResp.Name)
