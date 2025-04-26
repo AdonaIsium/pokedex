@@ -10,8 +10,10 @@ import (
 )
 
 func TestClient_ListLocations_Cache(t *testing.T) {
+	// Fake JSON body (empty object is valid for RespShallowLocations)
 	body := []byte(`{}`)
 
+	// Count how many times our test server is hit
 	callCount := 0
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		callCount++
@@ -20,22 +22,25 @@ func TestClient_ListLocations_Cache(t *testing.T) {
 	}))
 	defer ts.Close()
 
+	// Build a Client that uses our test server and a fresh cache
 	client := &Client{
-		httpClient: *ts.Client(),
+		httpClient: *ts.Client(), // deref to match http.Client field
+		cache:      *pokecache.NewCache(time.Minute),
 	}
 
-	cache := pokecache.NewCache(1 * time.Minute)
-
+	// Use pageURL so ListLocations skips baseURL entirely
 	pageURL := ts.URL + "/location-area"
 
-	if _, err := client.ListLocations(&pageURL, cache); err != nil {
+	// First call: should hit the server exactly once
+	if _, err := client.ListLocations(&pageURL); err != nil {
 		t.Fatalf("first ListLocations error: %v", err)
 	}
 	if callCount != 1 {
 		t.Fatalf("after 1st call, expected 1 HTTP request, got %d", callCount)
 	}
 
-	if _, err := client.ListLocations(&pageURL, cache); err != nil {
+	// Second call: should be served from cache (no new HTTP calls)
+	if _, err := client.ListLocations(&pageURL); err != nil {
 		t.Fatalf("second ListLocations error: %v", err)
 	}
 	if callCount != 1 {

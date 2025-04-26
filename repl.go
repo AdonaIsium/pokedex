@@ -5,16 +5,12 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"time"
-
-	"github.com/AdonaIsium/pokedex/internal/pokecache"
 )
 
 func startRepl(c *config) {
 	userInput := os.Stdin
 	pokeScanner := bufio.NewScanner(userInput)
 	supportedCommands := getCommands()
-	cache := pokecache.NewCache(time.Minute)
 	fmt.Println("Welcome to the Pokedex!")
 	for {
 
@@ -22,16 +18,20 @@ func startRepl(c *config) {
 		pokeScanner.Scan()
 		userText := string(pokeScanner.Text())
 		splitText := cleanInput(userText)
-
+		if len(splitText) == 0 {
+			continue
+		}
 		if command, exists := supportedCommands[splitText[0]]; !exists {
 			fmt.Println("Unknown command")
 		} else {
-			err := command.callback(c, cache)
+			args := splitText[1:]
+			err := command.callback(c, args...)
 			if err != nil {
 				fmt.Println(err)
 			}
 			continue
 		}
+
 	}
 }
 
