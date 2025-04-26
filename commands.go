@@ -33,6 +33,11 @@ func getCommands() map[string]cliCommand {
 		description: "Learn about an areas Pokemon",
 		callback:    commandExplore,
 	}
+	catchCommand := cliCommand{
+		name:        "catch",
+		description: "catch a pokemon!",
+		callback:    commandCatch,
+	}
 	exitCommand := cliCommand{
 		name:        "exit",
 		description: "Exit the Pokedex",
@@ -47,6 +52,7 @@ func getCommands() map[string]cliCommand {
 	supportedCommands["map"] = mapCommand
 	supportedCommands["mapb"] = mapBackCommand
 	supportedCommands["explore"] = exploreCommand
+	supportedCommands["catch"] = catchCommand
 	supportedCommands["help"] = helpCommand
 	supportedCommands["exit"] = exitCommand
 	return supportedCommands
