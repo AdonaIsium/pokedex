@@ -1,11 +1,14 @@
 package main
 
-import "github.com/AdonaIsium/pokedex/internal/pokeapi"
+import (
+	"github.com/AdonaIsium/pokedex/internal/pokeapi"
+	"github.com/AdonaIsium/pokedex/internal/pokecache"
+)
 
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(c *config) error
+	callback    func(c *config, cache *pokecache.Cache) error
 }
 
 type config struct {

@@ -3,6 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
+
+	"github.com/AdonaIsium/pokedex/internal/pokecache"
 )
 
 type LocationArea struct {
@@ -17,8 +19,8 @@ type Location struct {
 	URL  string `json:"url"`
 }
 
-func commandMapForward(c *config) error {
-	locationsResp, err := c.pokeapiClient.ListLocations(c.nextLocationsURL)
+func commandMapForward(c *config, cache *pokecache.Cache) error {
+	locationsResp, err := c.pokeapiClient.ListLocations(c.nextLocationsURL, cache)
 	if err != nil {
 		return err
 	}
@@ -32,12 +34,12 @@ func commandMapForward(c *config) error {
 	return nil
 }
 
-func commandMapBack(c *config) error {
+func commandMapBack(c *config, cache *pokecache.Cache) error {
 	if c.prevLocationsURL == nil {
 		return errors.New("You're on the first page")
 	}
 
-	locationResp, err := c.pokeapiClient.ListLocations(c.prevLocationsURL)
+	locationResp, err := c.pokeapiClient.ListLocations(c.prevLocationsURL, cache)
 	if err != nil {
 		return err
 	}

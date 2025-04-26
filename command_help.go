@@ -1,8 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
 
-func commandHelp(c *config) error {
+	"github.com/AdonaIsium/pokedex/internal/pokecache"
+)
+
+func commandHelp(c *config, cache *pokecache.Cache) error {
 	supportedCommands := getCommands()
 	fmt.Printf("Usage:\n")
 	for k, v := range supportedCommands {
